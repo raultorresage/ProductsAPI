@@ -13,16 +13,16 @@ namespace ProductsAPI.Controllers
         private static List<User> Users = new List<User>();
 
         [HttpPost("login",Name = "LogInUser")]      
-        public User LogIn([FromBody] string userName, [FromBody] string password)
+        public User LogIn([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
             
-                u.GetUserName() == userName && u.GetPassword() == password
+                u.GetUserName() == vU.GetUserName() && u.GetPassword() == vU.GetPassword()
             );
 
             if (user == null)
             {
-                NotFound(userName);
+                NotFound(vU);
                 throw new Exception("No user found");
             }
             return user;
@@ -30,11 +30,11 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("register", Name = "RegisterUser")]
-        public User Register([FromBody] string userName, [FromBody] string password)
+        public User Register([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
 
-                u.GetUserName() == userName && u.GetPassword() == password
+                u.GetUserName() == vU.GetUserName() && u.GetPassword() == vU.GetPassword()
             );
 
             if (user != null)
@@ -44,7 +44,7 @@ namespace ProductsAPI.Controllers
                     );
             }
 
-            User newUser = new User(userName, password);
+            User newUser = new User(vU.GetUserName(), vU.GetPassword());
             Users.Add(newUser);
             return newUser;
         }

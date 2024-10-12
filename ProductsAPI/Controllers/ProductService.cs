@@ -25,7 +25,7 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("add", Name = "AddProduct")]
-        public Boolean AddProd(Product p)
+        public Boolean AddProd([FromBody] Product p)
         {
             ProductsList.Add(p);
             return true;
