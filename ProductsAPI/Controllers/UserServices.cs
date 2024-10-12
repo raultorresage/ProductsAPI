@@ -13,7 +13,7 @@ namespace ProductsAPI.Controllers
         private static List<User> Users = new List<User>();
 
         [HttpPost("login",Name = "LogInUser")]      
-        public User LogIn([FromBody] User vU)
+        public IActionResult LogIn([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
             
@@ -25,12 +25,12 @@ namespace ProductsAPI.Controllers
                 NotFound(vU);
                 throw new Exception("No user found");
             }
-            return user;
+            return Ok(user);
             
         }
 
         [HttpPost("register", Name = "RegisterUser")]
-        public User Register([FromBody] User vU)
+        public IActionResult Register([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
 
@@ -46,7 +46,7 @@ namespace ProductsAPI.Controllers
 
             User newUser = new User(vU.GetUserName(), vU.GetPassword());
             Users.Add(newUser);
-            return newUser;
+            return Ok(newUser);
         }
     }
 }

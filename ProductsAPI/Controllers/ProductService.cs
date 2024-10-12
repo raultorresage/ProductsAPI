@@ -14,21 +14,21 @@ namespace ProductsAPI.Controllers
         public static List<Product> ProductsList = new List<Product>();
 
         [HttpGet("{id}",Name = "GetProducts")]
-        public Product Get(Guid id)
+        public IActionResult Get(Guid id)
         {
            var prod = ProductsList.FirstOrDefault(p => p.GetId() == id);
             if (prod == null)
             {
                NotFound();
             }
-            return prod;
+            return Ok(prod);
         }
 
         [HttpPost("add", Name = "AddProduct")]
-        public Boolean AddProd([FromBody] Product p)
+        public IActionResult AddProd([FromBody] Product p)
         {
             ProductsList.Add(p);
-            return true;
+            return Ok("User added");
         }
 
         // GET: ProductService/Details/5
