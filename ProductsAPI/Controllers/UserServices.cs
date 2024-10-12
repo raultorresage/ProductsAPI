@@ -17,7 +17,7 @@ namespace ProductsAPI.Controllers
         {
             var user = Users.FirstOrDefault((u) =>
             
-                u.GetUserName() == vU.GetUserName() && u.GetPassword() == vU.GetPassword()
+                u.Username == vU.Username && u.Password == vU.Password
             );
 
             if (user == null)
@@ -34,7 +34,7 @@ namespace ProductsAPI.Controllers
         {
             var user = Users.FirstOrDefault((u) =>
 
-                u.GetUserName() == vU.GetUserName() && u.GetPassword() == vU.GetPassword()
+                u.Username == vU.Username && u.Password == vU.Password
             );
 
             if (user != null)
@@ -44,7 +44,7 @@ namespace ProductsAPI.Controllers
                     );
             }
 
-            User newUser = new User(vU.GetUserName(), vU.GetPassword());
+            User newUser = new User(vU.Username, vU.Password);
             Users.Add(newUser);
             return Ok(newUser);
         }
