@@ -22,8 +22,7 @@ namespace ProductsAPI.Controllers
 
             if (user == null)
             {
-                NotFound(vU);
-                throw new Exception("No user found");
+               return NotFound(vU);
             }
             return Ok(user);
             
@@ -39,9 +38,7 @@ namespace ProductsAPI.Controllers
 
             if (user != null)
             {
-                throw new Exception(
-                    "User already Exist"
-                    );
+                return BadRequest(user);
             }
 
             User newUser = new User(vU.Username, vU.Password);
