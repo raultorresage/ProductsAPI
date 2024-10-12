@@ -16,7 +16,7 @@ namespace ProductsAPI.Controllers
         [HttpGet("{id}",Name = "GetProducts")]
         public IActionResult Get(Guid id)
         {
-           var prod = ProductsList.FirstOrDefault(p => p.Id == id);
+            var prod = ProductsList.FirstOrDefault(p => p.Id.Equals(id));
             if (prod == null)
             {
                NotFound();

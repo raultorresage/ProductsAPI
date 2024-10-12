@@ -17,7 +17,7 @@ namespace ProductsAPI.Controllers
         {
             var user = Users.FirstOrDefault((u) =>
             
-                u.Username == vU.Username && u.Password == vU.Password
+                u.Username.Equals(vU.Username) && u.Password.Equals(vU.Password)
             );
 
             if (user == null)
@@ -33,7 +33,7 @@ namespace ProductsAPI.Controllers
         {
             var user = Users.FirstOrDefault((u) =>
 
-                u.Username == vU.Username && u.Password == vU.Password
+                u.Username.Equals(vU.Username) && u.Password.Equals(vU.Password)
             );
 
             if (user != null)
