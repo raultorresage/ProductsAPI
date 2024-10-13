@@ -28,7 +28,7 @@ namespace ProductsAPI.Controllers
         public IActionResult AddProd([FromBody] Product p)
         {
             ProductsList.Add(p);
-            return Ok("User added");
+            return Ok(p.Id);
         }
 
         // GET: ProductService/Details/5

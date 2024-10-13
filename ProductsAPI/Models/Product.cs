@@ -9,7 +9,7 @@
 
         public Product(string name, string description, string author)
         {
-            this.Id = new Guid();
+            this.Id = Guid.NewGuid();
             this.Name = name;
             this.Description = description;
             this.Author = author;

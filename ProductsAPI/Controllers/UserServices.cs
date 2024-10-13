@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.Models;
+using System.Text;
 
 namespace ProductsAPI.Controllers
 {
@@ -22,10 +24,11 @@ namespace ProductsAPI.Controllers
 
             if (user == null)
             {
-               return NotFound(vU);
+               return NotFound("No user found");
             }
-            return Ok(user);
-            
+            string jwt = user.GenerateJwtToken("[k#%Yq~u1/*r1Oa%1!NN+TyF[$8Bs32/2Kjsko&%ci0jsdc", "products-issuer", "products-audience");
+            return Ok(jwt);
+
         }
 
         [HttpPost("register", Name = "RegisterUser")]
@@ -33,12 +36,12 @@ namespace ProductsAPI.Controllers
         {
             var user = Users.FirstOrDefault((u) =>
 
-                u.Username.Equals(vU.Username) && u.Password.Equals(vU.Password)
+                u.Username.Equals(vU.Username)
             );
 
             if (user != null)
             {
-                return BadRequest(user);
+                return BadRequest("No user found");
             }
 
             User newUser = new User(vU.Username, vU.Password);
