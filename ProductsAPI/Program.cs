@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add<RouteTrackingFilter>(); // Agrega el filtro a nivel global
+    options.Filters.Add<RouteTrackingFilter>(); // Add Filter globally
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
