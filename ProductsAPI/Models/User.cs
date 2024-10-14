@@ -38,7 +38,7 @@ namespace ProductsAPI.Models
                 expires: DateTime.Now.AddHours(1), // Token expira en 'expireMinutes' minutos
                 signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler().WriteToken(token); // return token
         }
 
 
