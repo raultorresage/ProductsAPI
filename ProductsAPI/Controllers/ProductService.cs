@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProductsAPI.Attributes;
 using ProductsAPI.Models;
 
 namespace ProductsAPI.Controllers
@@ -14,6 +15,7 @@ namespace ProductsAPI.Controllers
         public static List<Product> ProductsList = new List<Product>();
 
         [HttpGet("{id}",Name = "GetProducts")]
+        [Tracker("/api/products/{id}")]
         public IActionResult Get(Guid id)
         {
             var prod = ProductsList.FirstOrDefault(p => p.Id.Equals(id));
@@ -25,6 +27,7 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("add", Name = "AddProduct")]
+        [Tracker("/api/products/add")]
         public IActionResult AddProd([FromBody] Product p)
         {
             ProductsList.Add(p);

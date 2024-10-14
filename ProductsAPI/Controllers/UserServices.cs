@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ProductsAPI.Attributes;
 using ProductsAPI.Models;
 using System.Text;
 
@@ -14,7 +15,8 @@ namespace ProductsAPI.Controllers
     {
         private static List<User> Users = new List<User>();
 
-        [HttpPost("login",Name = "LogInUser")]      
+        [HttpPost("login",Name = "LogInUser")]
+        [Tracker("/api/user/login")]
         public IActionResult LogIn([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
@@ -32,6 +34,7 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("register", Name = "RegisterUser")]
+        [Tracker("/api/user/register")]
         public IActionResult Register([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
@@ -41,7 +44,7 @@ namespace ProductsAPI.Controllers
 
             if (user != null)
             {
-                return BadRequest("No user found");
+                return BadRequest("User already exist");
             }
 
             User newUser = new User(vU.Username, vU.Password);
@@ -50,3 +53,7 @@ namespace ProductsAPI.Controllers
         }
     }
 }
+
+// Custom attribute on endpoint like a middleware to explicit log the endpoint is using
+// On especific endpoint, on a method
+// Middleware that look to the route and if it has this attribute prints something
