@@ -20,7 +20,7 @@ public class RouteTrackingFilter : IAsyncActionFilter
 
         if (attribute != null)
         {
-            this._logger.LogInformation($"Entered on: {attribute.Route}");
+            this._logger.LogInformation($"Entered on: {context.HttpContext.GetEndpoint()}");
         }
 
         await next(); 

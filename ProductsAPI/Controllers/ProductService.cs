@@ -11,12 +11,13 @@ namespace ProductsAPI.Controllers
     [Consumes("application/json")]
     [Produces("application/json")]
     [Auth]
+    [Tracker]
     public class ProductService : ControllerBase
     {
         public static List<Product> ProductsList = new List<Product>();
 
         [HttpGet("{id}",Name = "GetProducts")]
-        [Tracker("/api/products/{id}")]
+        
         public IActionResult Get(Guid id)
         {
             var prod = ProductsList.FirstOrDefault(p => p.Id.Equals(id));
@@ -28,11 +29,22 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("add", Name = "AddProduct")]
-        [Tracker("/api/products/add")]
+        
         public IActionResult AddProd([FromBody] Product p)
         {
             ProductsList.Add(p);
             return Ok(p.Id);
+        }
+
+        [HttpGet(Name = "GetAllProducts")]
+        public IActionResult GetAll()
+        {
+            List<Product> retProds = new List<Product>();
+            foreach (var p in ProductsList)
+            {
+                retProds.Add(p);
+            }
+            return Ok(retProds);
         }
 
         // GET: ProductService/Details/5

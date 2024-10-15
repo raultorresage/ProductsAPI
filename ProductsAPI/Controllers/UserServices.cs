@@ -11,12 +11,13 @@ namespace ProductsAPI.Controllers
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [Tracker]
     public class UserServices : ControllerBase
     {
         private static List<User> Users = new List<User>();
 
         [HttpPost("login",Name = "LogInUser")]
-        [Tracker("/api/user/login")]
+        
         public IActionResult LogIn([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
@@ -34,7 +35,7 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("register", Name = "RegisterUser")]
-        [Tracker("/api/user/register")]
+        
         public IActionResult Register([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
