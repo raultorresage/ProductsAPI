@@ -17,7 +17,6 @@ namespace ProductsAPI.Controllers
         public static List<Product> ProductsList = new List<Product>();
 
         [HttpGet("{id}",Name = "GetProducts")]
-        
         public IActionResult Get(Guid id)
         {
             var prod = ProductsList.FirstOrDefault(p => p.Id.Equals(id));
@@ -29,7 +28,6 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("add", Name = "AddProduct")]
-        
         public IActionResult AddProd([FromBody] Product p)
         {
             ProductsList.Add(p);

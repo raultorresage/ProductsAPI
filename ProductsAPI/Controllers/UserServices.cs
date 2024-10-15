@@ -17,7 +17,6 @@ namespace ProductsAPI.Controllers
         private static List<User> Users = new List<User>();
 
         [HttpPost("login",Name = "LogInUser")]
-        
         public IActionResult LogIn([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
@@ -35,7 +34,6 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("register", Name = "RegisterUser")]
-        
         public IActionResult Register([FromBody] User vU)
         {
             var user = Users.FirstOrDefault((u) =>
