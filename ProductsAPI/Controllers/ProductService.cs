@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductsAPI.Attributes;
+using ProductsAPI.Filters;
 using ProductsAPI.Models;
 
 namespace ProductsAPI.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("/api/products")]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [Auth]
     public class ProductService : ControllerBase
     {
         public static List<Product> ProductsList = new List<Product>();

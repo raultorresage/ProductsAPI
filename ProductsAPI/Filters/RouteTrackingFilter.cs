@@ -9,7 +9,7 @@ public class RouteTrackingFilter : IAsyncActionFilter
 
     public RouteTrackingFilter(ILogger<RouteTrackingFilter> logger)
     {
-        _logger = logger;
+        this._logger = logger;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -20,7 +20,7 @@ public class RouteTrackingFilter : IAsyncActionFilter
 
         if (attribute != null)
         {
-            _logger.LogInformation($"Entered on: {attribute.Route}");
+            this._logger.LogInformation($"Entered on: {attribute.Route}");
         }
 
         await next(); 
