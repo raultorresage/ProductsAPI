@@ -47,8 +47,6 @@ namespace ProductsAPI.Filters
                     context.Result = new UnauthorizedResult();
                     return;
                 }
-                this._logger.LogInformation($"User {context.HttpContext.Connection.RemoteIpAddress?.ToString()} is not authenticated on {context.ActionDescriptor.RouteValues["controller"]}.{context.ActionDescriptor.RouteValues["action"]}");
-                context.Result = new UnauthorizedResult();
             }
         }
     }
