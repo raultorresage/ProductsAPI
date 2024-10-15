@@ -10,8 +10,8 @@ namespace ProductsAPI.Controllers
     [Route("/api/products")]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [Auth]
     [Tracker]
+    [Auth]
     public class ProductService : ControllerBase
     {
         public static List<Product> ProductsList = new List<Product>();
