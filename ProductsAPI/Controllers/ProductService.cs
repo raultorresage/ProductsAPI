@@ -15,7 +15,7 @@ namespace ProductsAPI.Controllers
     {
         public static List<Product> ProductsList = new List<Product>();
 
-        [HttpGet("{id: Guid}",Name = "GetProducts")]
+        [HttpGet("{id}",Name = "GetProducts")]
         [Tracker("/api/products/{id}")]
         public IActionResult Get(Guid id)
         {
