@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ProductsAPI.Data;
 using ProductsAPI.Filters;
 using System.Reflection.Metadata;
 using System.Text;
@@ -30,6 +32,10 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<RouteTrackingFilter>(); // Add Filter globally
     options.Filters.Add<AuthorizationFilter>();
 });
+
+builder.Services.AddDbContext<ApiDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    new MySqlServerVersion(new Version(8, 0, 21)))); // Version de MySQL
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
