@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductsAPI.Attributes;
+using ProductsAPI.Data;
 using ProductsAPI.Filters;
 using ProductsAPI.Models;
 
@@ -14,35 +16,53 @@ namespace ProductsAPI.Controllers
     [Auth]
     public class ProductService : ControllerBase
     {
-        public static List<Product> ProductsList = new List<Product>();
+        //public static List<Product> ProductsList = new List<Product>();
+        private readonly ApiDbContext _context;
+
+        public ProductService(ApiDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet("{id}",Name = "GetProducts")]
-        public IActionResult Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var prod = ProductsList.FirstOrDefault(p => p.Id.Equals(id));
-            if (prod == null)
+            Product p = await _context.Products.FindAsync(id);
+
+            if (p == null)
             {
-               NotFound();
+                return NotFound($"This product with {id} ID is not on DB");
             }
-            return Ok(prod);
+            return Ok(p);
         }
 
         [HttpPost("add", Name = "AddProduct")]
         public IActionResult AddProd([FromBody] Product p)
         {
-            ProductsList.Add(p);
-            return Ok(p.Id);
+            _context.Products.Add(p);
+            try
+            {
+                _context.SaveChanges();
+                return Ok(p.Id);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet(Name = "GetAllProducts")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            List<Product> retProds = new List<Product>();
-            foreach (var p in ProductsList)
+            try
             {
-                retProds.Add(p);
+                await _context.Products.ToListAsync<Product>();
+                return Ok(_context.Products);
+            } catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
-            return Ok(retProds);
+
         }
 
         // GET: ProductService/Details/5

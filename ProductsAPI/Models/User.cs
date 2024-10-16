@@ -7,20 +7,20 @@ namespace ProductsAPI.Models
 {
     public class User
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
         public User(string username, string password)
         {
-            this.Id = Guid.NewGuid();
+            this.Id = Guid.NewGuid().ToString("D");
             this.Username = username;
             this.Password = password;
         }
 
-        public string GenerateJwtToken(string key, string issuer, string audience)
+        public string GenerateJwtToken()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("[k#%Yq~u1/*r1Oa%1!NN+TyF[$8Bs32/2Kjsko&%ci0jsdc"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             // Crear claims con la información del objeto
@@ -32,8 +32,8 @@ namespace ProductsAPI.Models
 
             // Configurar el tiempo de expiración del token
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
+                issuer: "products-issuer",
+                audience: "products-audience",
                 claims: claims,
                 expires: DateTime.Now.AddHours(1), // Token expira en 'expireMinutes' minutos
                 signingCredentials: credentials);

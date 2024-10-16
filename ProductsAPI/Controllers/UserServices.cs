@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.Attributes;
+using ProductsAPI.Data;
 using ProductsAPI.Models;
 using System.Text;
 
@@ -14,41 +16,49 @@ namespace ProductsAPI.Controllers
     [Tracker]
     public class UserServices : ControllerBase
     {
-        private static List<User> Users = new List<User>();
+        //private static List<User> Users = new List<User>();
+        private readonly ApiDbContext _context;
+
+        public UserServices(ApiDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpPost("login",Name = "LogInUser")]
-        public IActionResult LogIn([FromBody] User vU)
+        public async Task<IActionResult> LogIn([FromBody] User vU)
         {
-            var user = Users.FirstOrDefault((u) =>
-            
-                u.Username.Equals(vU.Username) && u.Password.Equals(vU.Password)
-            );
-
-            if (user == null)
+           var u = await _context!.Users.FirstOrDefaultAsync(u => u.Username == vU.Username && u.Password == vU.Password);
+            if (u == null)
             {
-               return NotFound("No user found");
+                return NotFound("User not found");
             }
-            string jwt = user.GenerateJwtToken("[k#%Yq~u1/*r1Oa%1!NN+TyF[$8Bs32/2Kjsko&%ci0jsdc", "products-issuer", "products-audience");
-            return Ok(jwt);
-
+            return Ok(u.GenerateJwtToken());
         }
 
         [HttpPost("register", Name = "RegisterUser")]
-        public IActionResult Register([FromBody] User vU)
+        public async Task<IActionResult> Register([FromBody] User vU)
         {
-            var user = Users.FirstOrDefault((u) =>
-
-                u.Username.Equals(vU.Username)
-            );
-
-            if (user != null)
+            var result = await _context.Users.FirstOrDefaultAsync(e => e.Username == vU.Username);
+            if (result != null)
             {
                 return BadRequest("User already exist");
             }
+            try
+            {
+                await _context!.Users.AddAsync(vU);
+                try
+                {
+                   await _context.SaveChangesAsync();
+                    return Ok(vU);
+                } catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+            } catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
-            User newUser = new User(vU.Username, vU.Password);
-            Users.Add(newUser);
-            return Ok(newUser);
         }
     }
 }
