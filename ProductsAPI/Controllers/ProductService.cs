@@ -95,5 +95,25 @@ namespace ProductsAPI.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpDelete("{id}", Name = "DeleteProduct")]
+        public async Task<IActionResult> DeleteProd([FromRoute] string id)
+        {
+            Product? p = await _context.Products.FindAsync(id);
+            if (p == null)
+            {
+                return NotFound($"This product with {id} ID is not on DB");
+            }
+            _context.Products.Remove(p);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok("Product deleted");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
