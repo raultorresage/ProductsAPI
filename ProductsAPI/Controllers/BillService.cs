@@ -50,6 +50,22 @@ namespace ProductsAPI.Controllers
             }
             Bill b = new Bill(userId);
             b.BillProducts = products;
+            try
+            {
+                await this._context.Bills.AddAsync(b);
+                try
+                {
+                    await this._context.SaveChangesAsync();
+                    return Ok(b.Id);
+                } catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+            } catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
     }

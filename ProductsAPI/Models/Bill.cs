@@ -7,9 +7,10 @@
 
         public string UserId { get; set; }
 
-        public Bill(string UserId) { 
+        public Bill(string userId) { 
             Id = Guid.NewGuid().ToString("D");
             BillProducts = new List<Product>();
+            UserId = userId;
         }
 
     }

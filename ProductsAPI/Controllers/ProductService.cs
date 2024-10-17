@@ -29,7 +29,7 @@ namespace ProductsAPI.Controllers
         public async Task<IActionResult> Get(string id)
         {
             // Product? p = ProductsList.FirstOrDefault(p => p.Id == id);
-            Product? p = await _context.Products.FindAsync(id);
+            Product? p = await this._context.Products.FindAsync(id);
 
             if (p == null)
             {
@@ -44,11 +44,11 @@ namespace ProductsAPI.Controllers
         public IActionResult AddProd([FromBody] Product p)
         {
             // Add the product to the list (memory)
-            _context.Products.Add(p);
+            this._context.Products.Add(p);
             try
             {
                 // Save changes in the context (DB)
-                _context.SaveChanges();
+                this._context.SaveChanges();
                 return Ok(p.Id);
             }
             catch (Exception e)
@@ -64,9 +64,9 @@ namespace ProductsAPI.Controllers
             try
             {
                 // List all Products
-                await _context.Products.ToListAsync<Product>();
+                await this._context.Products.ToListAsync<Product>();
                 // Return a response with code 200 OK as a JSON as it says on Produces
-                return Ok(_context.Products);
+                return Ok(this._context.Products);
             }
             catch (Exception e)
             {
@@ -79,7 +79,7 @@ namespace ProductsAPI.Controllers
         public async Task<IActionResult> UpdateProd([FromBody] Product p, [FromRoute] string id)
         {
             // Product? product = ProductsList.FirstOrDefault(p => p.Id == id);
-            Product? product = await _context.Products.FindAsync(id);
+            Product? product = await this._context.Products.FindAsync(id);
             if (product == null)
             {
                 // Return a response with code 404 Not Found
@@ -99,11 +99,11 @@ namespace ProductsAPI.Controllers
                 }
             }
             // We update the product that we wanted to change
-            _context.Products.Update(product);
+            this._context.Products.Update(product);
             try
             {
                 // We save the changes
-                await _context.SaveChangesAsync();
+                await this._context.SaveChangesAsync();
                 // Return a response with code 200 OK
                 return Ok(product);
             }
@@ -118,7 +118,7 @@ namespace ProductsAPI.Controllers
         public async Task<IActionResult> DeleteProd([FromRoute] string id)
         {
             // Product? p = ProductsList.FirstOrDefault(p => p.Id == id);
-            Product? p = await _context.Products.FindAsync(id);
+            Product? p = await this._context.Products.FindAsync(id);
             if (p == null)
             {
 
@@ -126,11 +126,11 @@ namespace ProductsAPI.Controllers
                 return NotFound($"This product with {id} ID is not on DB");
             }
             // We remove the product from the list
-            _context.Products.Remove(p);
+            this._context.Products.Remove(p);
             try
             {
                 // We save the changes
-                await _context.SaveChangesAsync();
+                await this._context.SaveChangesAsync();
                 // Return a response with code 200 OK
                 return Ok("Product deleted");
             }
