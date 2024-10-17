@@ -9,8 +9,8 @@ using System.Text;
 
 namespace ProductsAPI.Controllers
 {
-    [Route("api/user")]
     [ApiController]
+    [Route("api/user")]
     [Consumes("application/json")]
     [Produces("application/json")]
     [Tracker]
@@ -27,7 +27,7 @@ namespace ProductsAPI.Controllers
         [HttpPost("login",Name = "LogInUser")]
         public async Task<IActionResult> LogIn([FromBody] User vU)
         {
-           User? u = await _context!.Users.FirstOrDefaultAsync(u => u.Username == vU.Username && u.Password == vU.Password);
+           User? u = await this._context!.Users.FirstOrDefaultAsync(u => u.Username == vU.Username && u.Password == vU.Password);
             if (u == null)
             {
                 return NotFound("User not found");
@@ -38,7 +38,7 @@ namespace ProductsAPI.Controllers
         [HttpPost("register", Name = "RegisterUser")]
         public async Task<IActionResult> Register([FromBody] User vU)
         {
-            User? result = await _context.Users.FirstOrDefaultAsync(e => e.Username == vU.Username);
+            User? result = await this._context.Users.FirstOrDefaultAsync(e => e.Username == vU.Username);
             if (result != null)
             {
                 return BadRequest("User already exist");
@@ -48,7 +48,7 @@ namespace ProductsAPI.Controllers
                 await _context!.Users.AddAsync(vU);
                 try
                 {
-                   await _context.SaveChangesAsync();
+                   await this._context.SaveChangesAsync();
                     return Ok(vU);
                 } catch (Exception e)
                 {

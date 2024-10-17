@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using ProductsAPI.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -27,7 +28,8 @@ namespace ProductsAPI.Models
             var claims = new[]
             {
         new Claim(JwtRegisteredClaimNames.Sub, this.Id.ToString()),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim("userId", this.Id)
     };
 
             // Configurar el tiempo de expiración del token
@@ -40,7 +42,5 @@ namespace ProductsAPI.Models
 
             return new JwtSecurityTokenHandler().WriteToken(token); // return token
         }
-
-
     }
 }
