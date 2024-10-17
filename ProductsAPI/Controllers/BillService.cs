@@ -41,7 +41,7 @@ namespace ProductsAPI.Controllers
         }
 
         [HttpPost("{jwt}/add", Name = "AddBill")]
-        public async Task<IActionResult> AddBill([FromBody] List<Product> products, [FromRoute] string jwt)
+        public async Task<IActionResult> AddBill([FromBody] List<string> productsIds, [FromRoute] string jwt)
         {
             string? userId = Jwt.GetUserIdFromToken(jwt);
             if (userId == null)
@@ -49,7 +49,7 @@ namespace ProductsAPI.Controllers
                 return BadRequest("Invalid token");
             }
             Bill b = new Bill(userId);
-            b.BillProducts = products;
+            b.BillProductIds = productsIds;
             try
             {
                 await this._context.Bills.AddAsync(b);
