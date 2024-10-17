@@ -11,6 +11,8 @@ namespace ProductsAPI.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Bill> Bills { get; set; }
     }
 }
 
