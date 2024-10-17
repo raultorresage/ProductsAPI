@@ -13,3 +13,5 @@ namespace ProductsAPI.Data
         public DbSet<User> Users { get; set; }
     }
 }
+
+//Deeper and EntityFramework

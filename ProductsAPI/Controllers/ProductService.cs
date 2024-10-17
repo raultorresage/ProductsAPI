@@ -5,6 +5,7 @@ using ProductsAPI.Attributes;
 using ProductsAPI.Data;
 using ProductsAPI.Filters;
 using ProductsAPI.Models;
+using System.Reflection;
 
 namespace ProductsAPI.Controllers
 {
@@ -24,10 +25,10 @@ namespace ProductsAPI.Controllers
             _context = context;
         }
 
-        [HttpGet("{id}",Name = "GetProducts")]
+        [HttpGet("{id}", Name = "GetProducts")]
         public async Task<IActionResult> Get(string id)
         {
-            Product p = await _context.Products.FindAsync(id);
+            Product? p = await _context.Products.FindAsync(id);
 
             if (p == null)
             {
@@ -58,14 +59,41 @@ namespace ProductsAPI.Controllers
             {
                 await _context.Products.ToListAsync<Product>();
                 return Ok(_context.Products);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
         }
 
-        // GET: ProductService/Details/5
-        
+        [HttpPut("{id}", Name = "UpdateProduct")]
+        public async Task<IActionResult> UpdateProd([FromBody] Product p, [FromRoute] string id)
+        {
+            Product? product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound($"This product with {p.Id} ID is not on DB");
+            }
+
+            PropertyInfo[] properties = typeof(Product).GetProperties();
+            foreach (var property in properties)
+            {
+                string propertyName = property.Name;
+                if (!propertyName.Equals("Id"))
+                {
+                    product.GetType().GetProperty(propertyName)!.SetValue(product, p.GetType().GetProperty(propertyName)!.GetValue(p));
+                }
+            }
+            _context.Products.Update(product);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(product);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

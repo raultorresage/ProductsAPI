@@ -27,7 +27,7 @@ namespace ProductsAPI.Controllers
         [HttpPost("login",Name = "LogInUser")]
         public async Task<IActionResult> LogIn([FromBody] User vU)
         {
-           var u = await _context!.Users.FirstOrDefaultAsync(u => u.Username == vU.Username && u.Password == vU.Password);
+           User? u = await _context!.Users.FirstOrDefaultAsync(u => u.Username == vU.Username && u.Password == vU.Password);
             if (u == null)
             {
                 return NotFound("User not found");
@@ -38,7 +38,7 @@ namespace ProductsAPI.Controllers
         [HttpPost("register", Name = "RegisterUser")]
         public async Task<IActionResult> Register([FromBody] User vU)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(e => e.Username == vU.Username);
+            User? result = await _context.Users.FirstOrDefaultAsync(e => e.Username == vU.Username);
             if (result != null)
             {
                 return BadRequest("User already exist");
