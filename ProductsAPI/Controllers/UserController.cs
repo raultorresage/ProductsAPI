@@ -14,12 +14,12 @@ namespace ProductsAPI.Controllers
     [Consumes("application/json")]
     [Produces("application/json")]
     [Tracker]
-    public class UserServices : ControllerBase
+    public class UserController : ControllerBase
     {
         //private static List<User> Users = new List<User>();
         private readonly ApiDbContext _context;
 
-        public UserServices(ApiDbContext context)
+        public UserController(ApiDbContext context)
         {
             _context = context;
         }

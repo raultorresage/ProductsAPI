@@ -5,6 +5,7 @@ using ProductsAPI.Data;
 using ProductsAPI.Filters;
 using System.Reflection.Metadata;
 using System.Text;
+using Azure.Storage.Blobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
 builder.Services.AddLogging();
+
+var blobConnectionString = builder.Configuration.GetSection("AzureBlobStorage:ConnectionString").Value;
+var containerName = builder.Configuration.GetSection("AzureBlobStorage:ContainerName").Value;
+
+builder.Services.AddSingleton(x => new BlobServiceClient(blobConnectionString));
+builder.Services.AddSingleton(x =>
+{
+    var blobServiceClient = x.GetRequiredService<BlobServiceClient>();
+    return blobServiceClient.GetBlobContainerClient(containerName);
+});
+
 
 var app = builder.Build();
 

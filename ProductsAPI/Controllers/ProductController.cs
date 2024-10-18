@@ -15,12 +15,12 @@ namespace ProductsAPI.Controllers
     [Produces("application/json")]
     [Tracker]
     [Auth]
-    public class ProductService : ControllerBase
+    public class ProductController : ControllerBase
     {
         //public static List<Product> ProductsList = new List<Product>();
         private readonly ApiDbContext _context;
 
-        public ProductService(ApiDbContext context)
+        public ProductController(ApiDbContext context)
         {
             _context = context;
         }
