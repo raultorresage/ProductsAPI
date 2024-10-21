@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<RouteTrackingFilter>(); // Add Filter globally
-    options.Filters.Add<AuthorizationFilter>();
+    options.Filters.Add<AuthorizationFilter>(); // Add Filter globally
 });
 
 builder.Services.AddDbContext<ApiDbContext>(options =>
