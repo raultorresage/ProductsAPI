@@ -67,6 +67,30 @@ namespace ProductsAPI.Controllers
             }
 
         }
+        [HttpDelete("{jwt}/{billId}")]
+        public async Task<IActionResult> DeleteBill([FromRoute] string jwt, [FromRoute] string billId)
+        {
+            string? userId = Jwt.GetUserIdFromToken(jwt);
+            if (userId == null)
+            {
+                return BadRequest("Invalid token");
+            }
+
+            try
+            {
+                Bill? b = await _context.Bills.FindAsync(billId);
+                if (b == null)
+                {
+                    return NotFound($"This bill was not founded on our system ({billId})");
+                }
+                _context.Bills.Remove(b);
+                await _context.SaveChangesAsync();
+                return Ok($"Bill {billId} has been removed");
+            } catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
     }
 }
