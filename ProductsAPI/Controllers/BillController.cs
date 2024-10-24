@@ -13,11 +13,11 @@ namespace ProductsAPI.Controllers
     [Produces("application/json")]
     [Tracker]
     [Auth]
-    public class BillService : ControllerBase
+    public class BillController : ControllerBase
     {
         private readonly ApiDbContext _context;
 
-        public BillService(ApiDbContext context)
+        public BillController(ApiDbContext context)
         {
             _context = context;
         }
