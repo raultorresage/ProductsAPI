@@ -32,6 +32,7 @@ builder.Services.AddSingleton(x =>
 });
 builder.Services.AddTransient<ProductServices>();
 builder.Services.AddTransient<UserServices>();
+builder.Services.AddTransient<BillServices>();
 
 // Add services to the container.
 
