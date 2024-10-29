@@ -1,11 +1,10 @@
+using System.Text;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.Data;
 using ProductsAPI.Filters;
-using System.Reflection.Metadata;
-using System.Text;
-using Azure.Storage.Blobs;
 using ProductsAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +17,8 @@ var tokenValParams = new TokenValidationParameters
     ValidateIssuerSigningKey = true,
     ValidIssuer = "products-issuer",
     ValidAudience = "products-audience",
-    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("[k#%Yq~u1/*r1Oa%1!NN+TyF[$8Bs32/2Kjsko&%ci0jsdc"))
+    IssuerSigningKey =
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes("[k#%Yq~u1/*r1Oa%1!NN+TyF[$8Bs32/2Kjsko&%ci0jsdc"))
 };
 
 var blobConnectionString = builder.Configuration.GetSection("AzureBlobStorage:ConnectionString").Value;
@@ -37,10 +37,7 @@ builder.Services.AddTransient<BillServices>();
 // Add services to the container.
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = tokenValParams;
-    });
+    .AddJwtBearer(options => { options.TokenValidationParameters = tokenValParams; });
 
 builder.Services.AddControllers(options =>
 {
@@ -50,7 +47,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    new MySqlServerVersion(new Version(8, 0, 21)))); // Version de MySQL
+        new MySqlServerVersion(new Version(8, 0, 21)))); // Version de MySQL
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

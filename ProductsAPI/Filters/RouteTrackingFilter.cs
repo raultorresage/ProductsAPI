@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 using ProductsAPI.Attributes;
-using System.Threading.Tasks;
 
 public class RouteTrackingFilter : IAsyncActionFilter
 {
@@ -9,7 +7,7 @@ public class RouteTrackingFilter : IAsyncActionFilter
 
     public RouteTrackingFilter(ILogger<RouteTrackingFilter> logger)
     {
-        this._logger = logger;
+        _logger = logger;
     }
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -18,11 +16,8 @@ public class RouteTrackingFilter : IAsyncActionFilter
             .OfType<Tracker>()
             .FirstOrDefault();
 
-        if (attribute != null)
-        {
-            this._logger.LogInformation($"Entered on: {context.HttpContext.GetEndpoint()}");
-        }
+        if (attribute != null) _logger.LogInformation($"Entered on: {context.HttpContext.GetEndpoint()}");
 
-        await next(); 
+        await next();
     }
 }
