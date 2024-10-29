@@ -1,12 +1,5 @@
-﻿namespace ProductsAPI.Attributes
+﻿namespace ProductsAPI.Attributes;
+
+public class Tracker : Attribute
 {
-    public class Tracker: Attribute
-    {
-        
-        public Tracker() {
-            
-        }
-
-
-    }
 }

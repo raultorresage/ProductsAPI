@@ -1,41 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductsAPI.Attributes;
-using ProductsAPI.Data;
 using ProductsAPI.Models;
-using System.Text;
 using ProductsAPI.Services;
 
-namespace ProductsAPI.Controllers
+namespace ProductsAPI.Controllers;
+
+[ApiController]
+[Route("api/user")]
+[Consumes("application/json")]
+[Produces("application/json")]
+[Tracker]
+public class UserController(UserServices userServices) : ControllerBase
 {
-    [ApiController]
-    [Route("api/user")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    [Tracker]
-    public class UserController (UserServices userServices) : ControllerBase 
+    [HttpPost("login", Name = "LogInUser")]
+    public async Task<IActionResult> LogIn([FromBody] User vU)
     {
+        var u = await userServices.LogIn(vU);
+        if (u == null) return NotFound("User not found");
+        return Ok(userServices.GenerateJwtToken(vU));
+    }
 
-        [HttpPost("login",Name = "LogInUser")]
-        public async Task<IActionResult> LogIn([FromBody] IUser vU)
-        {
-            IUser? u = await userServices.LogIn(vU);
-            if (u == null)
-            {
-                return NotFound("User not found");
-            }
-            return Ok(userServices.GenerateJwtToken(vU));
-        }
-
-        [HttpPost("register", Name = "RegisterUser")]
-        public async Task<IActionResult> Register([FromBody] IUser vU)
-        {
-            IUser? u = await userServices.Register(vU);
-            if (u == null) { return BadRequest("UAE"); }
-            return Ok(u);
-        }
+    [HttpPost("register", Name = "RegisterUser")]
+    public async Task<IActionResult> Register([FromBody] User vU)
+    {
+        var u = await userServices.Register(vU);
+        if (u == null) return BadRequest("UAE");
+        return Ok(u);
     }
 }
 

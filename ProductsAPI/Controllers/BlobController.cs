@@ -19,17 +19,11 @@ public class BlobController : ControllerBase
     [HttpPost("{jwt}/upload")]
     public async Task<IActionResult> UploadBlob(IFormFile file, [FromRoute] string jwt)
     {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest("Please upload a valid file.");
-        }
+        if (file == null || file.Length == 0) return BadRequest("Please upload a valid file.");
 
-        string? userId = Jwt.GetUserIdFromToken(jwt);
+        var userId = Jwt.GetUserIdFromToken(jwt);
 
-        if (userId == null)
-        {
-            return BadRequest("Invalid token.");
-        }
+        if (userId == null) return BadRequest("Invalid token.");
 
         using (var stream = file.OpenReadStream())
         {
