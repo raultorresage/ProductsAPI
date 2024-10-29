@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductsAPI.Models;
 
-namespace ProductsAPI.Data
+namespace ProductsAPI.Data;
+
+public class ApiDbContext : DbContext
 {
-    public class ApiDbContext: DbContext
+    public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
     {
-        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
-        {
-        }
-
-        public DbSet<IProduct> Products { get; set; }
-        public DbSet<IUser> Users { get; set; }
-
-        public DbSet<IBill> Bills { get; set; }
     }
+
+    public DbSet<IProduct> Products { get; set; }
+    public DbSet<IUser> Users { get; set; }
+
+    public DbSet<IBill> Bills { get; set; }
 }
 
 //Deeper and EntityFramework
