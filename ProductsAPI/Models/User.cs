@@ -11,10 +11,9 @@ namespace ProductsAPI.Models
         public string Username { get; set; }
         public string Id { get; set; }
         public string Password { get; set; }
-        public string GenerateToken();
         
     }
-    public class User
+    public class User: IUser
     {
         public string Id { get; set; }
         public string Username { get; set; }

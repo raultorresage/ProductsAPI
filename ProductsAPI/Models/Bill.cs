@@ -1,17 +1,16 @@
 ﻿namespace ProductsAPI.Models
 {
-    public class Bill
+    public interface IBill
     {
         public string Id { get; set; }
-        public List<string> BillProductIds { get; set; }
-
+        public List<string> BillProductsIds { get; set; }
         public string UserId { get; set; }
+    }
+    public class Bill(string userId) : IBill
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString("D");
+        public List<string> BillProductsIds { get; set; } = new List<string>();
 
-        public Bill(string userId) { 
-            Id = Guid.NewGuid().ToString("D");
-            BillProductIds = new List<string>();
-            UserId = userId;
-        }
-
+        public string UserId { get; set; } = userId;
     }
 }

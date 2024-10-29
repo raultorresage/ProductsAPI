@@ -12,7 +12,7 @@ namespace ProductsAPI.Data
         public DbSet<IProduct> Products { get; set; }
         public DbSet<IUser> Users { get; set; }
 
-        public DbSet<Bill> Bills { get; set; }
+        public DbSet<IBill> Bills { get; set; }
     }
 }
 
