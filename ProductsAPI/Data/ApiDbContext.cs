@@ -9,10 +9,10 @@ namespace ProductsAPI.Data
         {
         }
 
-        public DbSet<IProduct> Products { get; set; }
-        public DbSet<IUser> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<User> Users { get; set; }
 
-        public DbSet<IBill> Bills { get; set; }
+        public DbSet<Bill> Bills { get; set; }
     }
 }
 

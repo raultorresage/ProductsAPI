@@ -6,7 +6,7 @@ namespace ProductsAPI.Services;
 
 public class BillServices(ApiDbContext context)
 {
-    public async Task<List<IBill>?> GetBills(string jwt)
+    public async Task<List<Bill>?> GetBills(string jwt)
     {
         // We decode the JWT to get the user ID
         string? userId = Jwt.GetUserIdFromToken(jwt);
@@ -15,7 +15,7 @@ public class BillServices(ApiDbContext context)
             throw new Exception("Invalid JWT");
         }
 
-        List<IBill> bills = await context.Bills.Where(b => b.UserId == userId).ToListAsync();
+        List<Bill> bills = await context.Bills.Where(b => b.UserId == userId).ToListAsync();
         if (bills.Count == 0)
         {
             return null;
@@ -30,7 +30,7 @@ public class BillServices(ApiDbContext context)
         {
             throw new Exception("Invalid JWT");
         }
-        IBill b = new Bill(userId);
+        Bill b = new Bill(userId);
         b.BillProductsIds = productsIds;
         try
         {
@@ -57,7 +57,7 @@ public class BillServices(ApiDbContext context)
             throw new Exception("Invalid JWT");
         }
 
-        IBill? b = await context.Bills.FindAsync(billId);
+        Bill? b = await context.Bills.FindAsync(billId);
         if (b == null)
         {
             throw new Exception($"This bill was not founded on our system ({billId})");
