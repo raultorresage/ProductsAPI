@@ -6,6 +6,7 @@ using ProductsAPI.Attributes;
 using ProductsAPI.Data;
 using ProductsAPI.Models;
 using System.Text;
+using ProductsAPI.Services;
 
 namespace ProductsAPI.Controllers
 {
@@ -14,51 +15,26 @@ namespace ProductsAPI.Controllers
     [Consumes("application/json")]
     [Produces("application/json")]
     [Tracker]
-    public class UserController : ControllerBase
+    public class UserController (UserServices userServices) : ControllerBase 
     {
-        //private static List<User> Users = new List<User>();
-        private readonly ApiDbContext _context;
-
-        public UserController(ApiDbContext context)
-        {
-            _context = context;
-        }
 
         [HttpPost("login",Name = "LogInUser")]
-        public async Task<IActionResult> LogIn([FromBody] User vU)
+        public async Task<IActionResult> LogIn([FromBody] IUser vU)
         {
-           User? u = await this._context!.Users.FirstOrDefaultAsync(u => u.Username == vU.Username && u.Password == vU.Password);
+            IUser? u = await userServices.LogIn(vU);
             if (u == null)
             {
                 return NotFound("User not found");
             }
-            return Ok(u.GenerateJwtToken());
+            return Ok(userServices.GenerateJwtToken(vU));
         }
 
         [HttpPost("register", Name = "RegisterUser")]
-        public async Task<IActionResult> Register([FromBody] User vU)
+        public async Task<IActionResult> Register([FromBody] IUser vU)
         {
-            User? result = await this._context.Users.FirstOrDefaultAsync(e => e.Username == vU.Username);
-            if (result != null)
-            {
-                return BadRequest("User already exist");
-            }
-            try
-            {
-                await _context!.Users.AddAsync(vU);
-                try
-                {
-                   await this._context.SaveChangesAsync();
-                    return Ok(vU);
-                } catch (Exception e)
-                {
-                    return BadRequest(e.Message);
-                }
-            } catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
+            IUser? u = await userServices.Register(vU);
+            if (u == null) { return BadRequest("UAE"); }
+            return Ok(u);
         }
     }
 }

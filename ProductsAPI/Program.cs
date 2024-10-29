@@ -6,6 +6,7 @@ using ProductsAPI.Filters;
 using System.Reflection.Metadata;
 using System.Text;
 using Azure.Storage.Blobs;
+using ProductsAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddSingleton(x =>
     var blobServiceClient = x.GetRequiredService<BlobServiceClient>();
     return blobServiceClient.GetBlobContainerClient(containerName);
 });
+builder.Services.AddTransient<ProductServices>();
+builder.Services.AddTransient<UserServices>();
 
 // Add services to the container.
 
